@@ -5,7 +5,8 @@ alcune parole chiave:
 
 BOM
 
-- scheda con avr (probabilmente arduino)
+- scheda con avr (probabilmente arduino) o kit
+	-
 - alimentatori 12V
 - breadboard
 - potenzialmente cavetti per strip
@@ -14,6 +15,12 @@ BOM
 - push button (verosimilmente 2)
 - cavi dupont maschio-femmina
 - cavi dupont maschio-maschio
+- led
+	- https://www.amazon.it/Catena-LED-pezzi-WS2801-PI65/dp/B00KGDYOKS
+	- https://www.amazon.it/WS2801-50-pezzi-RGB-IP66-adalight-Light-Ambi/dp/B00U6THJEA/ref=sr_1_6?ie=UTF8&qid=1510698079&sr=8-6&keywords=ws2801
+	- https://www.amazon.com/Diffused-Digital-Pixels-Lights-Addressable/dp/B00B4UKG2W
+	- https://www.adafruit.com/product/322
+	- https://www.adafruit.com/product/738
 
 links
 
