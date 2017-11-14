@@ -1,0 +1,27 @@
+alcune parole chiave:
+
+- addressable led
+- ws8211
+
+BOM
+
+- scheda con avr (probabilmente arduino)
+- alimentatori 12V
+- breadboard
+- potenzialmente cavetti per strip
+- isp programmer o atmel ice
+	- USB AVRISP XPII, AVR Programmer
+- push button (verosimilmente 2)
+- cavi dupont maschio-femmina
+- cavi dupont maschio-maschio
+
+links
+
+- http://fritzing.org/projects/christmas-lights
+- www.adafruit.com
+
+shop
+
+- farnell
+- digikey
+- adafruit
