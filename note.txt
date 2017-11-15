@@ -2,11 +2,14 @@ alcune parole chiave:
 
 - addressable led
 - ws8211
+- educational kit
 
 BOM
 
 - scheda con avr (probabilmente arduino) o kit
 	-
+	- http://www.dx.com/it/p/r3-uno-learning-kit-for-arduino-with-stepper-motor-1602lcd-sensors-servo-breadboard-jumper-wire-408749?tc=EUR&ta=IT&gclid=EAIaIQobChMIyZiTnZ_A1wIVghwbCh1U0QTJEAQYBCABEgLEq_D_BwE#.WgwF2xfathE
+	- http://www.ebay.it/itm/STARTER-KIT-ARDUINO-UNO-Rev-3-con-microcontrollore-ATmega328-ART-CU01-/230784113801
 - alimentatori 12V
 - breadboard
 - potenzialmente cavetti per strip
@@ -21,6 +24,10 @@ BOM
 	- https://www.amazon.com/Diffused-Digital-Pixels-Lights-Addressable/dp/B00B4UKG2W
 	- https://www.adafruit.com/product/322
 	- https://www.adafruit.com/product/738
+- condensatore da 1000 [uF] per ogni striscia di led
+- resistenza 470 [ohm] per ogni striscia di led
+- 2 x resistenza 100k [ohm] (weak pull-up per aiutare il micro, puo' andare bene anche 10k)
+- 2 x condensatore 0.1 [uF], 16 [V] ceramico (antirimbalzo per il tasto)
 
 links
 
