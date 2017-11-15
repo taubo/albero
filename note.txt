@@ -10,7 +10,11 @@ BOM
 	-
 	- http://www.dx.com/it/p/r3-uno-learning-kit-for-arduino-with-stepper-motor-1602lcd-sensors-servo-breadboard-jumper-wire-408749?tc=EUR&ta=IT&gclid=EAIaIQobChMIyZiTnZ_A1wIVghwbCh1U0QTJEAQYBCABEgLEq_D_BwE#.WgwF2xfathE
 	- http://www.ebay.it/itm/STARTER-KIT-ARDUINO-UNO-Rev-3-con-microcontrollore-ATmega328-ART-CU01-/230784113801
-- alimentatori 12V
+- alimentatore 12V e buck
+	- lrs-50-12 (alimentatore)
+	- drok dc-dc convetiore buck voltage regulator 5-40 (convertitore)
+	oppure
+- alimentatore 12V e alimentatore 5V da almeno 3 ampere
 - breadboard
 - potenzialmente cavetti per strip
 - isp programmer o atmel ice
@@ -18,7 +22,7 @@ BOM
 - push button (verosimilmente 2)
 - cavi dupont maschio-femmina
 - cavi dupont maschio-maschio
-- led
+- led rgb
 	- https://www.amazon.it/Catena-LED-pezzi-WS2801-PI65/dp/B00KGDYOKS
 	- https://www.amazon.it/WS2801-50-pezzi-RGB-IP66-adalight-Light-Ambi/dp/B00U6THJEA/ref=sr_1_6?ie=UTF8&qid=1510698079&sr=8-6&keywords=ws2801
 	- https://www.amazon.com/Diffused-Digital-Pixels-Lights-Addressable/dp/B00B4UKG2W
