@@ -28,6 +28,7 @@ BOM
 	- https://www.amazon.com/Diffused-Digital-Pixels-Lights-Addressable/dp/B00B4UKG2W
 	- https://www.adafruit.com/product/322
 	- https://www.adafruit.com/product/738
+	- cercare anche su ebay
 - condensatore da 1000 [uF] per ogni striscia di led
 - resistenza 470 [ohm] per ogni striscia di led
 - 2 x resistenza 100k [ohm] (weak pull-up per aiutare il micro, puo' andare bene anche 10k)
@@ -43,3 +44,11 @@ shop
 - farnell
 - digikey
 - adafruit
+- ebay
+
+
+
+ARDUINO
+- aggiungere il proprio utente al gruppo dialout (forse anche tty)
+- sotto Debian/Ubuntu potrebbe essere necessario disinstallare o disabilitare il modemmanager
+	* apt-get purge modemmanager
