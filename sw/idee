@@ -1,0 +1,33 @@
+= esempio con arduino di struttura del codice
+
+== esempio di gestione gpio-button
+
+EVENT_BUTTON_PRESS_LONG
+EVENT_BUTTON_PRESS_SHORT
+LONG_PRESS_DURATION
+
+button_press_state;		// BUTTON_STATE_START, BUTTON_STATE_PRESSED, BUTTON_STATE_RELEASED
+button_press_start_time;	//
+button_press_end_time;		//
+button_press_event;		// long or short press
+
+struct albetask {
+	void (* exectue)(void);
+};
+
+struct albetask button_task;
+
+init_button_task() {
+}
+
+setup() {
+	init_button_task(&button_task);
+}
+
+loop() {
+	button_task.execute();
+}
+
+= funzionalita'
+	* lettura da file di configurazione, ad esempio i pin da usare e quali driver utilizzare per i vari moduli;
+	* possibilita' di usare diversi driver per pilotare led;
