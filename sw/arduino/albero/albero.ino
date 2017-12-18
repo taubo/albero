@@ -5,6 +5,7 @@
 
 #include "rainbow_seq.h"
 #include "stars_seq.h"
+#include "double_stair.h"
 
 // Create an ledStrip object and specify the pin it will use.
 PololuLedStrip<2> ledStrip;
@@ -21,6 +22,8 @@ PololuLedStrip<2> ledStrip;
 #define EVT_BTN_NO_EVT		0
 #define EVT_BTN_PRESS_SHORT	1
 #define EVT_BTN_PRESS_LONG	2
+
+#define SEQ_COUNT		3
 
 /*
  * system
@@ -52,9 +55,6 @@ struct buttons {
 
 void button_press_update(int value, struct button_press *button)
 {
-	Serial.println(value);
-	Serial.println(button->duration);
-
 	switch (button->state) {
 	case BUTTON_STATE_RELEASED:
 		if (value == 1) {
@@ -106,7 +106,7 @@ void button_execute(void *data)
 }
 
 struct color_seq tree_colors;
-struct light_seq light_sequence[2];
+struct light_seq light_sequence[SEQ_COUNT];
 int seq_idx;
 int push_counter;
 unsigned int seq_dur, seq_star;
@@ -134,17 +134,23 @@ void setup() {
 	tree_colors.colors = (rgb_color *)malloc(100 * sizeof (rgb_color));
 
 	light_sequence[0].update = rainbow_update;
+	light_sequence[0].period = 50;
 
 	// light_seq[1].init = stars_init;
 	stars_init();
 	light_sequence[1].update = stars_update;
+	light_sequence[1].period = 50;
+
+	double_stair_init();
+	light_sequence[2].update = double_stair_update;
+	light_sequence[2].period = 70;
 }
 
 void loop() {
-	/*
 	if (button_task.execute)
 		button_task.execute(NULL);
 
+	/*
 	char press_type[10];
 	for (int i = 0; i < BUTTON_NUMBER; ++i) {
 		if (alb_buttons[i].btn_evt.press_event == EVT_BTN_PRESS_SHORT)
@@ -175,12 +181,12 @@ void loop() {
 	}
 
 	if (push_counter >= 2) {
-		seq_idx = (seq_idx + 1) % 2;
+		seq_idx = (seq_idx + 1) % SEQ_COUNT;
 		push_counter = 0;
 	} else if (push_counter < 0) {
 		seq_dur = millis() - seq_star;
-		if (seq_dur >= 20000) {
-			seq_idx = (seq_idx + 1) % 2;
+		if (seq_dur >= 30000) {
+			seq_idx = rand() % SEQ_COUNT;
 			seq_star = millis();
 		}
 	}
@@ -188,5 +194,5 @@ void loop() {
 	light_sequence[seq_idx].update(&tree_colors, NULL);
 	ledStrip.write(tree_colors.colors, tree_colors.len);
 
-	delay(50);
+	delay(light_sequence[seq_idx].period);
 }
