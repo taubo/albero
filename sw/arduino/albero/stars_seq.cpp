@@ -5,6 +5,7 @@
 #define LED_NUMBER        100
 #define MAX_STARS         20
 #define MAX_BRIGHT        50
+#define MIN_BRIGHT        10
 #define BRIGHT_INCREMENT  2
 #define BRIGHT_DECREMENT  1
 
@@ -30,12 +31,11 @@ void update(struct star_seq *seq) {
 
 	switch (seq->state) {
 		case STAR_START:
-			bright = 0;
+			bright = MIN_BRIGHT;
 			seq->state = STAR_ASC;
 			break;
 		case STAR_ASC:
 			if (bright + bright_increment >= MAX_BRIGHT) {
-				Serial.println("next desc");
 				bright = MAX_BRIGHT;
 				seq->state = STAR_DESC;
 			} else {
@@ -43,15 +43,14 @@ void update(struct star_seq *seq) {
 			}
 			break;
 		case STAR_DESC:
-			if (bright - bright_decrement <= 0) {
-				bright = 0;
+			if (bright - bright_decrement <= MIN_BRIGHT) {
+				bright = MIN_BRIGHT;
 				seq->state = STAR_END;
 			} else {
 				bright -= bright_decrement;
 			}
 			break;
 		case STAR_END:
-			Serial.println("end");
 			bright = 0;
 			seq->state = STAR_START;
 			break;
@@ -97,11 +96,15 @@ void stars_update(struct color_seq *col, void *data)
 		}
 
 		if (led_free[i])
-			col->colors[i] = rgb_color(0, 0, 0);
-		// colors[i] = rgb_color(global_seq[i].bright, 0, global_seq[i].bright);
+			// col->colors[i] = rgb_color(0, 0, 0);
+			col->colors[i] = rgb_color(MIN_BRIGHT, 0, MIN_BRIGHT / 10);
+			// col->colors[i] = rgb_color(0, 20, 0);
 		else
-			//colors[i] = rgb_color(0, 0, 0);
-			col->colors[i] = rgb_color(global_seq[i].bright, global_seq[i].bright, global_seq[i].bright);
-		// analogWrite(led_pins[i], global_seq[i].bright);
+			// col->colors[i] = rgb_color(global_seq[i].bright, global_seq[i].bright, global_seq[i].bright);
+			// col->colors[i] = rgb_color(0, global_seq[i].bright, global_seq[i].bright);
+			// col->colors[i] = rgb_color(global_seq[i].bright, 0, global_seq[i].bright);
+			// col->colors[i] = rgb_color(global_seq[i].bright, global_seq[i].bright, 0);
+			// col->colors[i] = rgb_color(0, global_seq[i].bright, 0);
+			col->colors[i] = rgb_color(global_seq[i].bright, 0, global_seq[i].bright / 10);
 	}
 }
