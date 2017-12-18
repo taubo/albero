@@ -9,6 +9,7 @@ struct color_seq {
 };
 
 struct light_seq {	
+	int period;
 	void (*init)(void *data);
 	void (*update)(struct color_seq *colors, void *data);
 };
