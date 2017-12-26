@@ -105,11 +105,73 @@ void button_execute(void *data)
 	}
 }
 
+#define ALBERO_STATE_NORMAL	0
+#define ALBERO_CYCLIC_SEQ_STATE	1
+
 struct color_seq tree_colors;
 struct light_seq light_sequence[SEQ_COUNT];
 int seq_idx;
 int push_counter;
-unsigned int seq_dur, seq_star;
+unsigned int seq_dur, seq_start;
+bool new_state;
+
+int albero_state;
+
+/*
+ * every color is in the form of c * bright / lum
+ * where:
+ *	- c = {0, 1};
+ * 	- 0 <= lum <= bright
+ */
+struct stars_color_params {
+	uint8_t c[3];
+	uint8_t lum[3];
+};
+
+struct stars_color_params gen_col;
+
+void generate_stars_color(struct stars_color_params *col_params)
+{
+	int i;
+	int total_c;
+
+	for (i = 0; i < 3; ++i) {
+		col_params->c[i] = rand() % 2;
+		total_c += col_params->c[i];
+		col_params->lum[i] = rand() % 256;
+	}
+
+	if (total_c == 0)
+		col_params->c[rand() % 3] = 1;
+}
+
+rgb_color albero_animated_stars(uint8_t bright)
+{
+	return rgb_color(gen_col.c[0] * bright, gen_col.c[1] * bright, gen_col.c[2] * bright);
+}
+
+void set_random_stars()
+{
+	int rng_conf;
+
+	rng_conf = rand() % 2;
+
+	struct stars_seq_params local_params;
+	stars_get_default_params(&local_params);
+	local_params.animated_led_color = albero_animated_stars;
+
+	generate_stars_color(&gen_col);
+	switch (rng_conf) {
+	case 0:
+		local_params.fixed_led_color = rgb_color(0, 0, 0);
+		break;
+	case 1:
+		uint8_t bright = rand() % 256;
+		local_params.fixed_led_color = rgb_color(gen_col.c[0] * bright / 25, gen_col.c[1] * bright / 25, gen_col.c[2] * bright / 25);
+		break;
+	}
+	stars_seq_set_params(&local_params);
+}
 
 void setup() {
 	Serial.begin(9600);
