@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <string.h>
 #include "stars_seq.h"
 
 // seq stars
@@ -10,7 +11,7 @@
 #define BRIGHT_DECREMENT  1
 
 int current_stars;
-
+struct stars_seq_params stars_params;
 uint8_t led_free[LED_NUMBER];
 struct star_seq global_seq[LED_NUMBER];
 
@@ -59,9 +60,24 @@ void update(struct star_seq *seq) {
 	seq->bright = bright;
 }
 
+rgb_color default_animated(uint8_t bright)
+{
+	return rgb_color(bright, 0, bright / 10);
+}
+
 void stars_init()
 {
 	current_stars = 0;
+
+	stars_params.max_stars = MAX_STARS;
+	stars_params.bright_increment = BRIGHT_INCREMENT;
+	stars_params.bright_decrement = BRIGHT_DECREMENT;
+	stars_params.fixed_led_color = {
+		.red = MIN_BRIGHT,
+		.green = 0,
+		.blue = MIN_BRIGHT / 10,
+	};
+	stars_params.animated_led_color = default_animated;
 
 	for (int i = 0; i < LED_NUMBER; ++i) {
 		global_seq[i].bright = 0;
@@ -97,7 +113,7 @@ void stars_update(struct color_seq *col, void *data)
 
 		if (led_free[i])
 			// col->colors[i] = rgb_color(0, 0, 0);
-			col->colors[i] = rgb_color(MIN_BRIGHT, 0, MIN_BRIGHT / 10);
+			col->colors[i] = stars_params.fixed_led_color;
 			// col->colors[i] = rgb_color(0, 20, 0);
 		else
 			// col->colors[i] = rgb_color(global_seq[i].bright, global_seq[i].bright, global_seq[i].bright);
@@ -105,6 +121,30 @@ void stars_update(struct color_seq *col, void *data)
 			// col->colors[i] = rgb_color(global_seq[i].bright, 0, global_seq[i].bright);
 			// col->colors[i] = rgb_color(global_seq[i].bright, global_seq[i].bright, 0);
 			// col->colors[i] = rgb_color(0, global_seq[i].bright, 0);
-			col->colors[i] = rgb_color(global_seq[i].bright, 0, global_seq[i].bright / 10);
+			col->colors[i] = stars_params.animated_led_color(global_seq[i].bright);
 	}
+}
+
+void stars_get_default_params(struct stars_seq_params *params)
+{
+	if (!params)
+		return;
+
+	memcpy(params, &stars_params, sizeof(struct stars_seq_params));
+}
+
+int stars_seq_set_params(const struct stars_seq_params *params)
+{
+	int i;
+
+	if (!params)
+		return -1;
+
+	memcpy(&stars_params, params, sizeof(struct stars_seq_params));
+	for (i = 0; i < LED_NUMBER; ++i) {
+		global_seq[i].bright_increment = stars_params.bright_increment;
+		global_seq[i].bright_decrement = stars_params.bright_decrement;
+	}
+
+	return 0;
 }

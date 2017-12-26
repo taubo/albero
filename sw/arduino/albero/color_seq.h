@@ -3,6 +3,12 @@
 
 #include <PololuLedStrip.h>
 
+struct rgb {
+	uint8_t red;
+	uint8_t green;
+	uint8_t blue;
+};
+
 struct color_seq {
 	int len;
 	rgb_color *colors;

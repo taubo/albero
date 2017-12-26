@@ -15,12 +15,6 @@
 #define DEFAULT_GREEN_VAL	0
 #define DEFAULT_BLUE_VAL	0
 
-struct rgb {
-	uint8_t red;
-	uint8_t green;
-	uint8_t blue;
-};
-
 struct double_stairs {
 	int state;
 	struct rgb color;

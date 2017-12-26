@@ -6,6 +6,7 @@
 #include "rainbow_seq.h"
 #include "stars_seq.h"
 #include "double_stair.h"
+#include "snake.h"
 
 // Create an ledStrip object and specify the pin it will use.
 PololuLedStrip<2> ledStrip;
@@ -23,7 +24,7 @@ PololuLedStrip<2> ledStrip;
 #define EVT_BTN_PRESS_SHORT	1
 #define EVT_BTN_PRESS_LONG	2
 
-#define SEQ_COUNT		3
+#define SEQ_COUNT		4
 
 /*
  * system
@@ -189,6 +190,7 @@ void setup() {
 	button_task.execute = button_execute;
 
 	push_counter = 0;
+	albero_state = ALBERO_STATE_NORMAL;
 
 	// color seq
 	seq_idx = 0;
@@ -205,7 +207,11 @@ void setup() {
 
 	double_stair_init();
 	light_sequence[2].update = double_stair_update;
-	light_sequence[2].period = 70;
+	light_sequence[2].period = 50;
+
+	snake_init();
+	light_sequence[3].update = snake_update;
+	light_sequence[3].period = 50;
 }
 
 void loop() {
@@ -234,23 +240,48 @@ void loop() {
 	 */
 	if (digitalRead(BUTTON1_GPIO_PIN) == 1) {
 		// change seq
+		albero_state = ALBERO_STATE_NORMAL;
 		push_counter++;
 	}
 	if (digitalRead(BUTTON2_GPIO_PIN) == 1) {
 		// stop/play music
-		push_counter = -1;
-		seq_star = millis();
+		albero_state = ALBERO_CYCLIC_SEQ_STATE;
+		new_state = true;
+		seq_start = millis();
 	}
 
 	if (push_counter >= 2) {
 		seq_idx = (seq_idx + 1) % SEQ_COUNT;
 		push_counter = 0;
-	} else if (push_counter < 0) {
-		seq_dur = millis() - seq_star;
-		if (seq_dur >= 30000) {
-			seq_idx = rand() % SEQ_COUNT;
-			seq_star = millis();
+		if (seq_idx == 1) {
+			set_random_stars();
 		}
+		if (seq_idx == 3) {
+			snake_set_color(rgb_color(rand() % 40, rand() % 40, rand() % 40));
+		}
+	}
+
+	switch (albero_state) {
+	case ALBERO_CYCLIC_SEQ_STATE:
+		seq_dur = millis() - seq_start;
+		if (seq_dur >= 10000) {
+			seq_idx = rand() % SEQ_COUNT;
+			seq_start = millis();
+			new_state = true;
+		}
+		if (seq_idx == 1) {
+			if (new_state) {
+				set_random_stars();
+				new_state = false;
+			}
+		}
+		if (seq_idx == 3) {
+			if (new_state) {
+				snake_set_color(rgb_color(rand() % 40, rand() % 40, rand() % 40));
+				new_state = false;
+			}
+		}
+		break;
 	}
 
 	light_sequence[seq_idx].update(&tree_colors, NULL);
