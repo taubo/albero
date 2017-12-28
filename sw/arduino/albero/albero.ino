@@ -7,6 +7,8 @@
 #include "stars_seq.h"
 #include "double_stair.h"
 #include "snake.h"
+#include "func_seq.h"
+#include "fire.h"
 
 // Create an ledStrip object and specify the pin it will use.
 PololuLedStrip<2> ledStrip;
@@ -24,7 +26,7 @@ PololuLedStrip<2> ledStrip;
 #define EVT_BTN_PRESS_SHORT	1
 #define EVT_BTN_PRESS_LONG	2
 
-#define SEQ_COUNT		4
+#define SEQ_COUNT		6
 
 /*
  * system
@@ -193,7 +195,7 @@ void setup() {
 	albero_state = ALBERO_STATE_NORMAL;
 
 	// color seq
-	seq_idx = 0;
+	seq_idx = 5;
 	tree_colors.len = 100;
 	tree_colors.colors = (rgb_color *)malloc(100 * sizeof (rgb_color));
 
@@ -212,6 +214,12 @@ void setup() {
 	snake_init();
 	light_sequence[3].update = snake_update;
 	light_sequence[3].period = 50;
+
+	light_sequence[4].update = func_seq_update;
+	light_sequence[4].period = 50;
+
+	light_sequence[5].update = fire_update;
+	light_sequence[5].period = 50;
 }
 
 void loop() {
@@ -261,6 +269,10 @@ void loop() {
 		}
 	}
 
+	if (seq_idx == 5) {
+		light_sequence[seq_idx].period = random(1, 100);
+	}
+
 	switch (albero_state) {
 	case ALBERO_CYCLIC_SEQ_STATE:
 		seq_dur = millis() - seq_start;
@@ -278,6 +290,17 @@ void loop() {
 		if (seq_idx == 3) {
 			if (new_state) {
 				snake_set_color(rgb_color(rand() % 40, rand() % 40, rand() % 40));
+				new_state = false;
+			}
+		}
+		if (seq_idx == 4) {
+			if (new_state) {
+				struct rgb colors = {
+					.red = rand() % 40,
+					.green = rand() % 40,
+					.blue = rand() % 40,
+				};
+				func_seq_rand_color(colors);
 				new_state = false;
 			}
 		}
