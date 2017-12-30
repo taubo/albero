@@ -9,6 +9,7 @@
 #include "snake.h"
 #include "func_seq.h"
 #include "fire.h"
+#include "queue_light.h"
 
 // Create an ledStrip object and specify the pin it will use.
 PololuLedStrip<2> ledStrip;
@@ -26,7 +27,7 @@ PololuLedStrip<2> ledStrip;
 #define EVT_BTN_PRESS_SHORT	1
 #define EVT_BTN_PRESS_LONG	2
 
-#define SEQ_COUNT		6
+#define SEQ_COUNT		7
 
 /*
  * system
@@ -220,6 +221,10 @@ void setup() {
 
 	light_sequence[5].update = fire_update;
 	light_sequence[5].period = 50;
+
+	queue_light_init();
+	light_sequence[6].update = queue_light_update;
+	light_sequence[6].period = 500;
 }
 
 void loop() {
@@ -267,6 +272,14 @@ void loop() {
 		if (seq_idx == 3) {
 			snake_set_color(rgb_color(rand() % 40, rand() % 40, rand() % 40));
 		}
+		if (seq_idx == 6) {
+			struct rgb colors = {
+				.red = rand() % 40,
+				.green = rand() % 40,
+				.blue = rand() % 40,
+			};
+			queue_light_set_color(colors);
+		}
 	}
 
 	if (seq_idx == 5) {
@@ -301,6 +314,17 @@ void loop() {
 					.blue = rand() % 40,
 				};
 				func_seq_rand_color(colors);
+				new_state = false;
+			}
+		}
+		if (seq_idx == 6) {
+			if (new_state) {
+				struct rgb colors = {
+					.red = rand() % 40,
+					.green = rand() % 40,
+					.blue = rand() % 40,
+				};
+				queue_light_set_color(colors);
 				new_state = false;
 			}
 		}
