@@ -304,6 +304,10 @@ void loop() {
 		}
 		if (seq_idx == 3) {
 			if (new_state) {
+				struct snake_config snake_cfg;
+
+				snake_cfg.reset_colors = random(0, 1);
+				snake_set_config(snake_cfg);
 				snake_set_color(rgb_color(rand() % 40, rand() % 40, rand() % 40));
 				new_state = false;
 			}
