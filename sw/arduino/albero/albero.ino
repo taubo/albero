@@ -27,7 +27,7 @@ PololuLedStrip<2> ledStrip;
 #define EVT_BTN_PRESS_SHORT	1
 #define EVT_BTN_PRESS_LONG	2
 
-#define SEQ_COUNT		7
+#define SEQ_COUNT		6
 
 /*
  * system
@@ -196,7 +196,7 @@ void setup() {
 	albero_state = ALBERO_STATE_NORMAL;
 
 	// color seq
-	seq_idx = 5;
+	seq_idx = 0;
 	tree_colors.len = 100;
 	tree_colors.colors = (rgb_color *)malloc(100 * sizeof (rgb_color));
 
@@ -222,9 +222,11 @@ void setup() {
 	light_sequence[5].update = fire_update;
 	light_sequence[5].period = 50;
 
+/*
 	queue_light_init();
 	light_sequence[6].update = queue_light_update;
 	light_sequence[6].period = 500;
+	*/
 }
 
 void loop() {
